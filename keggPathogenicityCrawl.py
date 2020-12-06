@@ -18,8 +18,6 @@ def main():
     aaPattern = (
         r'([0-9]+) aa <.*?AA seq.*?>DB search</button><br>\\n([A-Z<br>\\n]+)</td></tr>\\n'
         )
-    testList = [1, 2, ]
-    testDict = {1:2, 3:4,}
 
     classDefDict = dict()
     classDef = open('classDef.py', 'w')
@@ -37,9 +35,9 @@ def main():
     geneDef = open('geneDef.py', 'w')
     geneDef.write('geneDef = [\n')
     geneDefKey = 0
-    orthologySignatureMapDict = dict()
+    orthologySignatureMapList = list()
     orthologySignatureMap = open('orthologySignatureMap.py', 'w')
-    orthologySignatureMap.write('orthologySignatureMap = {\n')
+    orthologySignatureMap.write('orthologySignatureMap = [\n')
     fasta = open('pathogenicityGenes.fa', 'w')
     signatureOrthologyMap = open('signatureOrthologyMap.sig', 'w')
 
@@ -67,7 +65,7 @@ def main():
             #print('\t\t' + orthologyDefinition)
             if (not (signatureOrthology[1] in orthologyDefDict)):
                 orthologyDefDict[signatureOrthology[1]] = orthologyDefKey
-                orthologySignatureMapDict[orthologyDefKey] = list()
+                orthologySignatureMapList.append(list())
                 orthologyDefKey = orthologyDefKey + 1
 
                 #
@@ -104,13 +102,20 @@ def main():
                     + '", "' + orthologyDefinition + '", ' + str(seqSumLen) + ', ' + str(seqCount) + ', 0],\n')
             else:
                 print('Orthology with Two Signatures: ' + str(signatureOrthology))
-            orthologySignatureMapDict[orthologyDefDict[signatureOrthology[1]]].append(signatureDefDict[signature[1]])
+            orthologySignatureMapList[orthologyDefDict[signatureOrthology[1]]].append(signatureDefDict[signature[1]])
 
     #
-    for orthologySignatureTuple in orthologySignatureMapDict.items():
-        orthologySignatureMap.write(str(orthologySignatureTuple[0]) + ':' + str(orthologySignatureTuple[1]) + ',\n')
-        for signatureKey in orthologySignatureTuple[1]:
-            signatureOrthologyMap.write(str(signatureKey) + '\t' + str(orthologySignatureTuple[0]) + '\t')
+    orthologyKey = 0
+    for signatureMapList in orthologySignatureMapList:
+        orthologySignatureMap.write('    ' + str(signatureMapList) + ',\n')
+        for signatureKey in signatureMapList:
+            signatureOrthologyMap.write(str(signatureKey) + '\t' + str(orthologyKey) + '\n')
+        orthologyKey = orthologyKey + 1
+    classDef.write(']\n')
+    signatureDef.write(']\n')
+    orthologyDef.write(']\n')
+    geneDef.write(']\n')
+    orthologySignatureMap.write(']\n')
 
 if __name__ == '__main__':
     main()

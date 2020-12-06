@@ -18,6 +18,8 @@ def main():
     aaPattern = (
         r'([0-9]+) aa <.*?AA seq.*?>DB search</button><br>\\n([A-Z<br>\\n]+)</td></tr>\\n'
         )
+    testList = [1, 2, ]
+    testDict = {1:2, 3:4,}
 
     classDefDict = dict()
     classDef = open('classDef.py', 'w')
@@ -39,6 +41,7 @@ def main():
     orthologySignatureMap = open('orthologySignatureMap.py', 'w')
     orthologySignatureMap.write('orthologySignatureMap = {\n')
     fasta = open('pathogenicityGenes.fa', 'w')
+    signatureOrthologyMap = open('signatureOrthologyMap.sig', 'w')
 
     for line in open('signature.csv', 'r'):
         signature = line.split('\t')
@@ -102,6 +105,12 @@ def main():
             else:
                 print('Orthology with Two Signatures: ' + str(signatureOrthology))
             orthologySignatureMapDict[orthologyDefDict[signatureOrthology[1]]].append(signatureDefDict[signature[1]])
+
+    #
+    for orthologySignatureTuple in orthologySignatureMapDict.items():
+        orthologySignatureMap.write(str(orthologySignatureTuple[0]) + ':' + str(orthologySignatureTuple[1]) + ',\n')
+        for signatureKey in orthologySignatureTuple[1]:
+            signatureOrthologyMap.write(str(signatureKey) + '\t' + str(orthologySignatureTuple[0]) + '\t')
 
 if __name__ == '__main__':
     main()

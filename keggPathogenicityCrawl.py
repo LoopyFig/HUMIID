@@ -14,7 +14,7 @@ def main():
     genePattern = (
         r'<nobr>[^>:]*:&nbsp;</nobr></td><td><a href="([^"]+)">([^><]+)</a>([^><]*)'
         )
-    definitionPattern = r'Definition</nobr></th>\\n<[^<>]*><[^<>]*><[^<>]*>(.*?)<br>\\n'
+    definitionPattern = r'Definition</nobr></th>\\n<.*?>([^><]*?)<br>\\n'
     aaPattern = (
         r'([0-9]+) aa <.*?AA seq.*?>DB search</button><br>\\n([A-Z<br>\\n]+)</td></tr>\\n'
         )
@@ -77,7 +77,11 @@ def main():
                     #print('\t\t\t' + str(orthologyGene))
                     geneName = orthologyGene[1] + orthologyGene[2]
                     geneData = str(urllib.request.urlopen('https://www.genome.jp' + orthologyGene[0]).read())
-                    geneDefinition = re.search(definitionPattern, geneData).group(1)
+                    try:
+                        geneDefinition = re.search(definitionPattern, geneData).group(1)
+                    except:
+                        print('Empty Gene Entry: ' + str(orthologyGene))
+                        continue
                     #print('\t\t\t\t' + geneDefinition)
                     if (not (geneName in geneDefDict)):
                         aaSeq = re.search(aaPattern, geneData)

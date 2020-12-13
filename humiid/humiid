@@ -1,7 +1,7 @@
 #!/bin/bash
 if [[ "$1" == "help" ]]
 then
-  echo "HUMIID is a tool to identify pathogenicity signatures in metagenomic data."
+  echo "HUMIID is a tool to identify KEGG pathogenicity signatures in metagenomic data."
   echo "To use HUMIID you must build or pull the docker image, assumed to be named humiid,"
   echo "and run the following command (replace humiid with actual image name if different):"
   echo ""
@@ -30,7 +30,7 @@ then
   echo ""
   echo 'sudo docker run humiid run "{commands}"'
   echo ""
-  echo "{commands}: the desired commands, flanked by quotes; this allows use of internal packages including diamond and bbmap:"
+  echo "{commands}: the desired commands, flanked by quotes; this allows use of internal packages including diamond and bbmap"
 elif [[ $# == 3 && "$1" == "pathogenicity" ]]
 then
   mkdir -p /data/$3

@@ -1,0 +1,46 @@
+#!/bin/bash
+if [[ "$1" == "help" ]]
+then
+  echo "HUMIID is a tool to identify pathogenicity signatures in metagenomic data."
+  echo "To use HUMIID you must build or pull the docker image, assumed to be named humiid,"
+  echo "and run the following command (replace humiid with actual image name if different):"
+  echo ""
+  echo "sudo docker run -v {inputDirectory}:/data humiid pathogenicity {inputFASTA} {outputDirectory}"
+  echo ""
+  echo "{inputDirecotry}: the directory containing the input file and output directory, full path"
+  echo "{inputFASTA}: a fasta format metagenomic dataset file in the input directory, path from input directory"
+  echo "{outputDirectory}: the directory that will contain the output, created if not already present, path from input directory"
+  echo ""
+  echo "The output directory includes the following output files:"
+  echo "out.tsv: The DIAMOND blastx output"
+  echo "minPath.mp: The input for minPath, tab separated fields - gene_key, signature_key"
+  echo "geneScores.gout: The relative abundance scores for the genes, tab separated fields - gene_key, gene_id, gene_description, sequence_length, orthology_key, orthology_id, orthology_description, relative_abundance_score"
+  echo "orthologyScores.oout: The relative abundance scores for the orthologies, tab separated fields - orthology_key, orthology_id, orthology_description, sum_of_sequence_lengths, count_of_genes, relative_abundance_score"
+  echo "orthologyScores.oout.dup: The relative abundance scores for the orthologies duplicated for shared signatures, tab separated fields - orthology_key, orthology_id, orthology_description, signature_key, signature_id, signature_description, sum_of_sequence_lengths, count_of_genes, relative_abundance_score"
+  echo "minPath.mp.minpath: The MinPath output"
+  echo "minPath.mp.minpath.details: The MinPath output details"
+  echo "orthologyScores.oout.dup: The relative abundance scores for the orthologies duplicated for shared signatures selected by MinPath, tab separated fields - orthology_key, orthology_id, orthology_description, signature_key, signature_id, signature_description, sum_of_sequence_lengths, count_of_genes, relative_abundance_score"
+  echo "signatureScores.sout: The relative abundance scores for the signatures, tab separated fields - signature_key, signature_id, signature_description, orthology_count, orthologies_found, found_total_ratio, relative_abundance_score"
+  echo ""
+  echo "Two other options include the help command (this one) run with:"
+  echo ""
+  echo "sudo docker run humiid help"
+  echo ""
+  echo "and the run command which will allow you to input a command that is run inside the container, run with:"
+  echo ""
+  echo 'sudo docker run humiid run "{commands}"'
+  echo ""
+  echo "{commands}: the desired commands, flanked by quotes; this allows use of internal packages including diamond and bbmap:"
+elif [[ $# == 3 && "$1" == "pathogenicity" ]]
+then
+  mkdir -p /data/$3
+  diamond blastx -q /data/$2 -d /pathogenicity/db/pathogenicityGenes.dmnd -o /data/$3/out.tsv
+  python3 /pathogenicity/diamondScore.py /data/$3/out.tsv /data/$3/minPath.mp /data/$3/geneScores.gout /data/$3/orthologyScores.oout
+  python /minpath/MinPath.py -any /data/$3/minPath.mp -map /pathogenicity/db/signatureOrthologyMap.sig -report /data/$3/minPath.mp.minpath -details /data/$3/minPath.mp.minpath.details
+  python3 /pathogenicity/minPathScore.py /data/$3/minPath.mp.minpath /data/$3/minPath.mp.minpath.details /data/$3/orthologyScores.oout /data/$3/orthologyScores.oout.sig /data/$3/signatureScores.sout
+elif [[ "$1" == "run" ]]
+then
+  $2
+else
+  echo "try help"
+fi

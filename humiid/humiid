@@ -19,7 +19,7 @@ then
   echo "orthologyScores.oout.dup: The relative abundance scores for the orthologies duplicated for shared signatures, tab separated fields - orthology_key, orthology_id, orthology_description, signature_key, signature_id, signature_description, sum_of_sequence_lengths, count_of_genes, relative_abundance_score"
   echo "minPath.mp.minpath: The MinPath output"
   echo "minPath.mp.minpath.details: The MinPath output details"
-  echo "orthologyScores.oout.dup: The relative abundance scores for the orthologies duplicated for shared signatures selected by MinPath, tab separated fields - orthology_key, orthology_id, orthology_description, signature_key, signature_id, signature_description, sum_of_sequence_lengths, count_of_genes, relative_abundance_score"
+  echo "orthologyScores.oout.sig: The relative abundance scores for the orthologies duplicated for shared signatures selected by MinPath, tab separated fields - orthology_key, orthology_id, orthology_description, signature_key, signature_id, signature_description, sum_of_sequence_lengths, count_of_genes, relative_abundance_score"
   echo "signatureScores.sout: The relative abundance scores for the signatures, tab separated fields - signature_key, signature_id, signature_description, orthology_count, orthologies_found, found_total_ratio, relative_abundance_score"
   echo ""
   echo "Two other options include the help command (this one) run with:"

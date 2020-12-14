@@ -10,14 +10,23 @@ sudo docker run -v {inputDirectory}:/data loopyfig/humiid pathogenicity {inputFA
 {outputDirectory}: the directory that will contain the output, created if not already present, path from input directory
 
 The output directory includes the following output files:
+
 out.tsv: The DIAMOND blastx output
+
 minPath.mp: The input for minPath, tab separated fields - gene_key, signature_key
+
 geneScores.gout: The relative abundance scores for the genes, tab separated fields - gene_key, gene_id, gene_description, sequence_length, orthology_key, orthology_id, orthology_description, relative_abundance_score
+
 orthologyScores.oout: The relative abundance scores for the orthologies, tab separated fields - orthology_key, orthology_id, orthology_description, sum_of_sequence_lengths, count_of_genes, relative_abundance_score
+
 orthologyScores.oout.dup: The relative abundance scores for the orthologies duplicated for shared signatures, tab separated fields - orthology_key, orthology_id, orthology_description, signature_key, signature_id, signature_description, sum_of_sequence_lengths, count_of_genes, relative_abundance_score
+
 minPath.mp.minpath: The MinPath output
+
 minPath.mp.minpath.details: The MinPath output details
-orthologyScores.oout.dup: The relative abundance scores for the orthologies duplicated for shared signatures selected by MinPath, tab separated fields - orthology_key, orthology_id, orthology_description, signature_key, signature_id, signature_description, sum_of_sequence_lengths, count_of_genes, relative_abundance_score
+
+orthologyScores.oout.sig: The relative abundance scores for the orthologies duplicated for shared signatures selected by MinPath, tab separated fields - orthology_key, orthology_id, orthology_description, signature_key, signature_id, signature_description, sum_of_sequence_lengths, count_of_genes, relative_abundance_score
+
 signatureScores.sout: The relative abundance scores for the signatures, tab separated fields - signature_key, signature_id, signature_description, orthology_count, orthologies_found, found_total_ratio, relative_abundance_score
 
 Two other options include the help command (this one) run with:

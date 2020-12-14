@@ -28,4 +28,4 @@ and the run command which will allow you to input a command that is run inside t
 
 sudo docker run humiid run "{commands}"
 
-{commands}: the desired commands, flanked by quotes; this allows use of internal packages including diamond and bbmap:
+{commands}: the desired commands, flanked by quotes; this allows use of internal packages including diamond and bbmap

@@ -1,9 +1,9 @@
 # HUMIID
 HUMIID is a tool to identify KEGG pathogenicity signatures in metagenomic data.
-To use HUMIID you must build or pull the docker image, assumed to be named humiid,
-and run the following command (replace humiid with actual image name if different):
+To use HUMIID you must build or pull the docker image, assumed to be named loopyfig/humiid,
+and run the following command (replace loopyfig/humiid with actual image name if different):
 
-sudo docker run -v {inputDirectory}:/data humiid pathogenicity {inputFASTA} {outputDirectory}
+sudo docker run -v {inputDirectory}:/data loopyfig/humiid pathogenicity {inputFASTA} {outputDirectory}
 
 {inputDirecotry}: the directory containing the input file and output directory, full path
 {inputFASTA}: a fasta format metagenomic dataset file in the input directory, path from input directory
@@ -22,10 +22,10 @@ signatureScores.sout: The relative abundance scores for the signatures, tab sepa
 
 Two other options include the help command (this one) run with:
 
-sudo docker run humiid help
+sudo docker run loopyfig/humiid help
 
 and the run command which will allow you to input a command that is run inside the container, run with:
 
-sudo docker run humiid run "{commands}"
+sudo docker run loopyfig/humiid run "{commands}"
 
 {commands}: the desired commands, flanked by quotes; this allows use of internal packages including diamond and bbmap
